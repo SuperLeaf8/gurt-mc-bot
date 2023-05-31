@@ -1,11 +1,9 @@
 import discord
 import os
-from dotenv import load_dotenv
-Token = os.getenv("Token")
+import json
 from discord.ext import commands
 import requests
 
-load_dotenv()
 
 bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 bot.remove_command("help")
@@ -18,7 +16,8 @@ async def on_ready():
 async def hello(ctx):
     username = ctx.message.author.mention
     await ctx.send("Hello there " + username)
-
+ 
+# minecraft server get
 @bot.command()
 async def minecraft(ctx):
     r = requests.get('https://api.mcsrvstat.us/2/gurt.cc')
@@ -36,4 +35,7 @@ async def minecraft(ctx):
 
     await ctx.send(embed=embed)
 
-bot.run(Token)
+with open("token.json","r") as f:
+    token = json.load(f)
+
+bot.run(token)
